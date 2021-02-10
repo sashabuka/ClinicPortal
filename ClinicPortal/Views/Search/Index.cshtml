@@ -1,0 +1,25 @@
+﻿@model ClinicPortal.Controllers.SearchModel
+@section styles
+{
+    <link href="@Url.Content("~/css/search.css")" rel="stylesheet" type="text/css" />
+}
+
+<div class="search-container">
+    <h1>Clinic search engine</h1>
+    <form asp-controller="Search" asp-action="Index" class="col-md-6 form-group">
+        <div class="control-form-container">
+            <input class="form-control" type="text" asp-for="SearchString" placeholder="Search..." />
+            <input class="btn btn-primary" type="submit" value="Search" />
+        </div>
+        <span asp-validation-for="SearchString" class="text-danger"></span>
+    </form>
+    @if (Model.Result != null)
+    {
+        <div class="col-md-6 search-result">
+            <partial name="_SearchResult" model="Model.Result" />
+        </div>
+    }
+</div>
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,21 @@
+﻿@model IEnumerable<ClinicPortal.Controllers.SearchResultModel>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Search result:
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.Name, "Details", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
