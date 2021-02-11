@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
+using System.Web;
+using ClinicPortal.Domain.Search;
+using ClinicPortal.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Http.Logging;
 
 namespace ClinicPortal.Controllers
 {
@@ -13,25 +17,29 @@ namespace ClinicPortal.Controllers
     {
         public ActionResult Index()
         {
-            return View(SearchModel.Empty);
+            return View(SearchViewModel.Empty);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Index([FromForm] SearchModel model)
+        public async Task<ActionResult> Index([FromForm] SearchViewModel viewModel)
         {
             try
             {
                 if (!ModelState.IsValid)
-                    return View(SearchModel.Empty);
-                model.SearchString = string.Empty;
-                model.Result = new List<SearchResultModel>()
+                    return View(SearchViewModel.Empty);
+                var client = new ClinicHttpClient("https://clinicaltables.nlm.nih.gov/api/npi_idv/v3");
+                var result = await client.DoSearchAsync(viewModel.SearchString);
+                viewModel.SearchString = string.Empty;
+                viewModel.Result = result.Select(item=> new SearchResultViewModel()
                 {
-                    new SearchResultModel() {Name = "Test1"},
-                    new SearchResultModel() {Name = "Test2"}
-                };
+                    Id = item.Id,
+                    Address = item.Address,
+                    Specialty = item.Specialty,
+                    Name = item.FullName
+                });
 
-                return View(model);
+                return View(viewModel);
             }
             catch
             {
@@ -45,19 +53,4 @@ namespace ClinicPortal.Controllers
         }
     }
 
-    public class SearchResultModel
-    {
-        public string Name { get; set; }
-        public string Id { get; set; }
-    }
-
-    public class SearchModel
-    {
-        [Required(ErrorMessage = "Please enter search term")]
-        public string SearchString { get; set; }
-
-        public IEnumerable<SearchResultModel> Result { get; set; }
-
-        [JsonIgnore] public static SearchModel Empty => new SearchModel();
-    }
 }
