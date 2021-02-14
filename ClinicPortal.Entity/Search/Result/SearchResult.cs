@@ -6,7 +6,6 @@ using ClinicPortal.Entity.Convertor;
 
 namespace ClinicPortal.Entity.Search.Result
 {
-    [JsonConverter(typeof(SearchResultConvertor))]
     public class SearchResult
     {
         public string Id { get; set; }

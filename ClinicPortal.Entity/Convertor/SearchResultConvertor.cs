@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace ClinicPortal.Entity.Convertor
 {
-    public class SearchResultConvertor
+    public class SearchResultConvertor: IClinicApiConvertor<IEnumerable<SearchResult>>
     {
         private const int DATA_INDEX = 3;
 
@@ -20,10 +20,11 @@ namespace ClinicPortal.Entity.Convertor
         {
             var response = JArray.Parse(input);
             var result = new List<SearchResult>();
-            if (response.Count < 4) return null;
+
+            if (response.Count <= DATA_INDEX) return null;
             foreach (var item in response[DATA_INDEX].Children())
             {
-                if (item.Count() < 4) continue;
+                if (item.Count() <= DATA_INDEX) continue;
                 var properties = item as JArray;
 
                 if (properties == null) continue;
@@ -39,6 +40,10 @@ namespace ClinicPortal.Entity.Convertor
 
             return result;
         }
-    }
 
+        public IEnumerable<SearchResult> Execute(string input)
+        {
+            return Get(input);
+        }
+    }
 }

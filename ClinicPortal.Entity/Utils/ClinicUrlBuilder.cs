@@ -10,6 +10,21 @@ namespace ClinicPortal.Entity.Utils
     {
         private readonly StringBuilder builder;
 
+        private readonly string[] fields = new[]
+        {
+            "NPI",
+            "provider_type",
+            "gender",
+            "licenses",
+            "name",
+            "addr_practice",
+            "addr_mailing",
+            "name_other",
+            "other_ids",
+            "misc"
+
+        };
+
         public ClinicUrlBuilder(string baseUrl)
         {
             builder = new StringBuilder(baseUrl.EndsWith("/") ? baseUrl : $"{baseUrl}/");
@@ -41,6 +56,12 @@ namespace ClinicPortal.Entity.Utils
         public ClinicUrlBuilder AddSearchFields(string[] values)
         {
             builder.Append($"sf={string.Join(',', values.Select(Uri.EscapeDataString)) }");
+            return this;
+        }
+
+        public ClinicUrlBuilder AddFullExtendedFields()
+        {
+            builder.Append($"ef={string.Join(',', fields.Select(Uri.EscapeDataString)) }");
             return this;
         }
 

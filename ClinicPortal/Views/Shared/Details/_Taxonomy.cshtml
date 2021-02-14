@@ -1,0 +1,19 @@
+﻿@model ClinicPortal.Entity.Search.Result.Details.Taxonomy
+@if (Model == null) { return; }
+<div class="card">
+    <h5 class="card-header">Taxonomy</h5>
+    <div class="card-body d-lg-flex flex-column">
+        <dl class="d-lg-inline-flex">
+            <dt col-sm-3>@Html.LabelFor(item => item.Code):</dt>
+            <dd class="ml-2">@Html.DisplayFor(item => item.Code)</dd>
+        </dl>
+        <dl class="d-lg-inline-flex">
+            <dt col-sm-3>@Html.LabelFor(item => item.Grouping):</dt>
+            <dd class="ml-2">@Html.DisplayFor(item => item.Grouping)</dd>
+        </dl>
+        <dl class="d-lg-inline-flex">
+            <dt col-sm-3>@Html.LabelFor(item => item.Classification):</dt>
+            <dd class="ml-2">@Html.DisplayFor(item => item.Classification)</dd>
+        </dl>
+    </div>
+</div>

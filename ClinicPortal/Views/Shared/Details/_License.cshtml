@@ -1,0 +1,35 @@
+﻿@model ClinicPortal.Models.DetailsViewModel
+@if (Model == null) { return; }
+<div class="card">
+    <h5 class="card-header">Licenses</h5>
+    <div class="card-body d-lg-flex flex-column">
+
+        @foreach (var license in Model.Details.Licenses)
+        {
+            @foreach (var licenseItem in license)
+            {
+                <dl class="d-lg-inline-flex">
+                    <dt col-sm-3>@Html.LabelFor(item => licenseItem.LicNumber):</dt>
+                    <dd class="ml-2">@Html.DisplayFor(item => licenseItem.LicNumber)</dd>
+                </dl>
+                <dl class="d-lg-inline-flex">
+                    <dt col-sm-3>@Html.LabelFor(item => licenseItem.LicState):</dt>
+                    <dd class="ml-2">@Html.DisplayFor(item => licenseItem.LicState)</dd>
+                </dl>
+                <dl class="d-lg-inline-flex">
+                    <dt col-sm-3>@Html.LabelFor(item => licenseItem.IsPrimaryTaxonomy):</dt>
+                    <dd class="ml-2">@Html.DisplayFor(item => licenseItem.IsPrimaryTaxonomy)</dd>
+                </dl>
+                <div class="row">
+                    <div class="col-md-6">
+                        <partial model="@licenseItem.Taxonomy" name="~/Views/Shared/Details/_Taxonomy.cshtml" />
+                    </div>
+                    <div class="col-md-6">
+                        <partial model="@licenseItem.Medicare" name="~/Views/Shared/Details/_Medicare.cshtml" />
+                    </div>
+                </div>
+
+            }
+        }
+    </div>
+</div>

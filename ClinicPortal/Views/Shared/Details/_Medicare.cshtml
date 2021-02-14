@@ -1,0 +1,19 @@
+﻿@model ClinicPortal.Entity.Search.Result.Details.Medicare[]
+@if (Model == null) { return; }
+<div class="card">
+    <h5 class="card-header">Medicare</h5>
+    <div class="card-body d-lg-flex flex-column">
+
+        @foreach (var item in Model)
+        {
+            <dl class="d-lg-inline-flex">
+                <dt>@Html.LabelFor(model => item.SpcCode):</dt>
+                <dd class="ml-2">@Html.DisplayFor(model => item.SpcCode)</dd>
+            </dl>
+            <dl class="d-lg-inline-flex">
+                <dt>@Html.LabelFor(model => item.Type):</dt>
+                <dd class="ml-2">@Html.DisplayFor(model => item.Type)</dd>
+            </dl>
+        }
+    </div>
+</div>

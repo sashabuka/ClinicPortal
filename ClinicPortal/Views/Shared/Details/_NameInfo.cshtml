@@ -1,0 +1,35 @@
+﻿@model ClinicPortal.Entity.Search.Result.Details.Name[]
+@if (Model == null || Model.Length == 0 || Model.All(item => item == null)) { return; }
+<div class="card">
+    <h5 class="card-header">@ViewData["Title"]</h5>
+    <div class="card-body d-lg-flex flex-column">
+
+        @foreach (var nameInfo in Model)
+        {
+            <dl class="d-lg-inline-flex">
+                <dt>@Html.LabelFor(item => nameInfo.Full):</dt>
+                <dd class="ml-2">@Html.DisplayFor(item => nameInfo.Full)</dd>
+            </dl>
+            <dl class="d-lg-inline-flex">
+                <dt>@Html.LabelFor(item => nameInfo.First):</dt>
+                <dd class="ml-2">@Html.DisplayFor(item => nameInfo.First)</dd>
+            </dl>
+            <dl class="d-lg-inline-flex">
+                <dt>@Html.LabelFor(item => nameInfo.Last):</dt>
+                <dd class="ml-2">@Html.DisplayFor(item => nameInfo.Last)</dd>
+            </dl>
+            <dl class="d-lg-inline-flex">
+                <dt>@Html.LabelFor(item => nameInfo.Last):</dt>
+                <dd class="ml-2">@Html.DisplayFor(item => nameInfo.Middle)</dd>
+            </dl>
+            <dl class="d-lg-inline-flex">
+                <dt>@Html.LabelFor(item => nameInfo.Last):</dt>
+                <dd class="ml-2">@Html.DisplayFor(item => nameInfo.Credential)</dd>
+            </dl>
+            <dl class="d-lg-inline-flex">
+                <dt>@Html.LabelFor(item => nameInfo.Prefix):</dt>
+                <dd class="ml-2">@Html.DisplayFor(item => nameInfo.Prefix)</dd>
+            </dl>
+        }
+    </div>
+</div>

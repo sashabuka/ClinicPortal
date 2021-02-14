@@ -6,6 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using ClinicPortal.Domain.Search;
+using ClinicPortal.Entity;
+using ClinicPortal.Entity.Search;
+using ClinicPortal.Entity.Search.Result;
 using ClinicPortal.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +18,13 @@ namespace ClinicPortal.Controllers
 {
     public class SearchController : Controller
     {
+        private readonly ISearchService _searchService;
+
+        public SearchController(ISearchService searchService)
+        {
+            _searchService = searchService;
+        }
+
         public ActionResult Index()
         {
             return View(SearchViewModel.Empty);
@@ -28,17 +38,9 @@ namespace ClinicPortal.Controllers
             {
                 if (!ModelState.IsValid)
                     return View(SearchViewModel.Empty);
-                var client = new ClinicHttpClient("https://clinicaltables.nlm.nih.gov/api/npi_idv/v3");
-                var result = await client.DoSearchAsync(viewModel.SearchString);
-                viewModel.SearchString = string.Empty;
-                viewModel.Result = result.Select(item=> new SearchResultViewModel()
-                {
-                    Id = item.Id,
-                    Address = item.Address,
-                    Specialty = item.Specialty,
-                    Name = item.FullName
-                });
-
+                var result = await _searchService.SearchByDefault(viewModel.SearchString);
+                ClearSearchString(viewModel);
+                UpdateViewModel(viewModel, result);
                 return View(viewModel);
             }
             catch
@@ -47,9 +49,39 @@ namespace ClinicPortal.Controllers
             }
         }
 
-        public ActionResult Details()
+        private static void ClearSearchString(SearchViewModel viewModel)
         {
-            return View();
+            viewModel.SearchString = string.Empty;
+        }
+
+        private static void UpdateViewModel(SearchViewModel viewModel, IEnumerable<SearchResult> result)
+        {
+            viewModel.Result = result.Select(item => new SearchResultViewModel()
+            {
+                Id = item.Id,
+                Address = item.Address,
+                Specialty = item.Specialty,
+                Name = item.FullName
+            });
+        }
+
+        public async Task<ActionResult> Details(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                var result = await _searchService.SearchById(id);
+                return View(new DetailsViewModel(result));
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+            
         }
     }
 
