@@ -1,7 +1,46 @@
-﻿
-@{
-    ViewData["Title"] = "Details";
-}
+﻿@model ClinicPortal.Models.DetailsViewModel
 
 <h1>Details</h1>
 
+<div>
+    <hr />
+    <div class="pb-3">
+        <a asp-action="Index">Back to Search</a>
+    </div>
+    @if (Model.Details.NPI != null)
+    {
+        <div class="row">
+            <div class="col-md-4 pb-2">
+                <partial model="Model" name="Details/_BaseInfo" />
+            </div>
+            <div class="col-md-4 pb-2">
+                <partial model="Model.Details.Name" name="Details/_NameInfo" view-data='@new ViewDataDictionary(ViewData){{"Title", "Name Info"}}' />
+            </div>
+            <div class="col-md-4 pb-2">
+                <partial model="Model.Details.Misc" name="Details/_Misc" />
+            </div>
+            <div class="col-md-6 pb-2">
+                <partial model="Model.Details.AddrPractice" name="Details/_Address" view-data='@new ViewDataDictionary(ViewData){{"Title", "Practice Address"}}' />
+            </div>
+            <div class="col-md-6 pb-2">
+                <partial model="Model.Details.AddrMailing" name="Details/_Address" view-data='@new ViewDataDictionary(ViewData){{"Title", "Mailing Address"}}' />
+            </div>
+            <div class="col-md-12 pb-2">
+                <partial model="Model" name="Details/_License" />
+            </div>
+            <div class="col-md-6 pb-2">
+                <partial model="Model.Details.OtherIds" name="Details/_OtherId" />
+            </div>
+            <div class="col-md-6 pb-2">
+                <partial model="Model.Details.NameOther" name="Details/_NameInfo" view-data='@new ViewDataDictionary(ViewData){{"Title", "Name Other"}}'/>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row justify-content-center">
+            <h5>Item not found</h5>
+        </div>
+    }
+
+</div>

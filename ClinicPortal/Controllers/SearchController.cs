@@ -1,37 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
+using System.Web;
+using ClinicPortal.Domain.Search;
+using ClinicPortal.Entity;
+using ClinicPortal.Entity.Search;
+using ClinicPortal.Entity.Search.Result;
+using ClinicPortal.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Http.Logging;
 
 namespace ClinicPortal.Controllers
 {
     public class SearchController : Controller
     {
+        private readonly ISearchService _searchService;
+
+        public SearchController(ISearchService searchService)
+        {
+            _searchService = searchService;
+        }
+
         public ActionResult Index()
         {
-            return View(SearchModel.Empty);
+            return View(SearchViewModel.Empty);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Index([FromForm] SearchModel model)
+        public async Task<ActionResult> Index([FromForm] SearchViewModel viewModel)
         {
             try
             {
                 if (!ModelState.IsValid)
-                    return View(SearchModel.Empty);
-                model.SearchString = string.Empty;
-                model.Result = new List<SearchResultModel>()
-                {
-                    new SearchResultModel() {Name = "Test1"},
-                    new SearchResultModel() {Name = "Test2"}
-                };
-
-                return View(model);
+                    return View(SearchViewModel.Empty);
+                var result = await _searchService.SearchByDefault(viewModel.SearchString);
+                ClearSearchString(viewModel);
+                UpdateViewModel(viewModel, result);
+                return View(viewModel);
             }
             catch
             {
@@ -39,25 +49,40 @@ namespace ClinicPortal.Controllers
             }
         }
 
-        public ActionResult Details()
+        private static void ClearSearchString(SearchViewModel viewModel)
         {
-            return View();
+            viewModel.SearchString = string.Empty;
+        }
+
+        private static void UpdateViewModel(SearchViewModel viewModel, IEnumerable<SearchResult> result)
+        {
+            viewModel.Result = result.Select(item => new SearchResultViewModel()
+            {
+                Id = item.Id,
+                Address = item.Address,
+                Specialty = item.Specialty,
+                Name = item.FullName
+            });
+        }
+
+        public async Task<ActionResult> Details(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                var result = await _searchService.SearchById(id);
+                return View(new DetailsViewModel(result));
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+            
         }
     }
 
-    public class SearchResultModel
-    {
-        public string Name { get; set; }
-        public string Id { get; set; }
-    }
-
-    public class SearchModel
-    {
-        [Required(ErrorMessage = "Please enter search term")]
-        public string SearchString { get; set; }
-
-        public IEnumerable<SearchResultModel> Result { get; set; }
-
-        [JsonIgnore] public static SearchModel Empty => new SearchModel();
-    }
 }

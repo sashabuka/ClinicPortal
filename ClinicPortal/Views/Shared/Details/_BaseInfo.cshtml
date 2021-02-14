@@ -1,0 +1,19 @@
+﻿@model ClinicPortal.Models.DetailsViewModel
+@if (Model == null) { return; }
+<div class="card">
+    <h5 class="card-header">Base information</h5>
+    <div class="card-body d-lg-flex flex-column">
+        <dl class="d-lg-inline-flex">
+            <dt col-sm-3>@Html.LabelFor(item => item.Details.NPI):</dt>
+            <dd class="ml-2">@Html.DisplayFor(item => item.Details.NPI)</dd>
+        </dl>
+        <dl class="d-lg-inline-flex">
+            <dt col-sm-3>@Html.LabelFor(item => item.Details.ProviderType):</dt>
+            <dd class="ml-2">@Html.DisplayFor(item => item.Details.ProviderType)</dd>
+        </dl>
+        <dl class="d-lg-inline-flex">
+            <dt col-sm-3>@Html.LabelFor(item => item.Details.Gender):</dt>
+            <dd class="ml-2">@Html.DisplayFor(item => item.Details.Gender)</dd>
+        </dl>
+    </div>
+</div>

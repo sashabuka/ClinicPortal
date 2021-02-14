@@ -1,0 +1,31 @@
+﻿@model ClinicPortal.Entity.Search.Result.Details.OtherId[][]
+@if (Model == null || Model.Length == 0 || Model.All(item => item == null)) { return; }
+<div class="card">
+    <h5 class="card-header">Other Id</h5>
+
+    @foreach (var otherIds in Model)
+    {
+        <div class="card-body d-lg-flex flex-column">
+            @foreach (var item in otherIds)
+            {
+                <dl class="d-lg-inline-flex">
+                    <dt col-sm-3>@Html.LabelFor(model => item.Id):</dt>
+                    <dd class="ml-2">@Html.DisplayFor(model => item.Id)</dd>
+                </dl>
+                <dl class="d-lg-inline-flex">
+                    <dt col-sm-3>@Html.LabelFor(model => item.Issuer):</dt>
+                    <dd class="ml-2">@Html.DisplayFor(model => item.Issuer)</dd>
+                </dl>
+                <dl class="d-lg-inline-flex">
+                    <dt col-sm-3>@Html.LabelFor(model => item.State):</dt>
+                    <dd class="ml-2">@Html.DisplayFor(model => item.State)</dd>
+                </dl>
+                <dl class="d-lg-inline-flex">
+                    <dt col-sm-3>@Html.LabelFor(model => item.Type):</dt>
+                    <dd class="ml-2">@Html.DisplayFor(model => item.Type)</dd>
+                </dl>
+            }
+        </div>
+    }
+</div>
+

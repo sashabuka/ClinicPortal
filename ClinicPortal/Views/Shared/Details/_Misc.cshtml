@@ -1,0 +1,22 @@
+﻿@model ClinicPortal.Entity.Search.Result.Details.Misc[]
+@if (Model == null) { return; }
+<div class="card">
+    <h5 class="card-header">Misc</h5>
+    <div class="card-body d-lg-flex flex-column">
+        @foreach (var item in Model)
+        {
+            <dl class="d-lg-inline-flex">
+                <dt col-sm-3>@Html.LabelFor(model => item.EnumerationDate):</dt>
+                <dd class="ml-2">@Html.DisplayFor(model => item.EnumerationDate)</dd>
+            </dl>
+            <dl class="d-lg-inline-flex">
+                <dt col-sm-3>@Html.LabelFor(model => item.LastUpdateDate):</dt>
+                <dd class="ml-2">@Html.DisplayFor(model => item.LastUpdateDate)</dd>
+            </dl>
+            <dl class="d-lg-inline-flex">
+                <dt col-sm-3>@Html.LabelFor(model => item.IsSoleProprietor):</dt>
+                <dd class="ml-2">@Html.DisplayFor(model => item.IsSoleProprietor)</dd>
+            </dl>
+        }
+    </div>
+</div>

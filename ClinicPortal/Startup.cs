@@ -2,6 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ClinicPortal.Domain.Search;
+using ClinicPortal.Domain.Service;
+using ClinicPortal.Entity;
+using ClinicPortal.Entity.Convertor;
+using ClinicPortal.Entity.Search;
+using ClinicPortal.Entity.Search.Result;
+using ClinicPortal.Entity.Search.Result.Details;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -24,6 +31,7 @@ namespace ClinicPortal
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            ConfigureIoC(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +60,22 @@ namespace ClinicPortal
                     name: "default",
                     pattern: "{controller=Search}/{action=Index}/{id?}");
             });
+        }
+
+        private void ConfigureIoC(IServiceCollection services)
+        {
+            string baseUrl = Configuration.GetValue<string>("BaseUrl");
+
+            //services.AddScoped(provider => new CustomerPortalDbContext(connectionString));
+            services.AddTransient<IClinicApiConvertor<DetailsResult>, DetailsResultConvertor>();
+            services.AddTransient<IClinicApiConvertor<IEnumerable<SearchResult>>, SearchResultConvertor>();
+
+            services.AddTransient<IClinicSearchable>(provider =>
+                new ClinicHttpClient(baseUrl,
+                    provider.GetService<IClinicApiConvertor<IEnumerable<SearchResult>>>(),
+                    provider.GetService<IClinicApiConvertor<DetailsResult>>()));
+
+            services.AddScoped<ISearchService, ClinicSearchService>();
         }
     }
 }

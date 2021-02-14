@@ -1,4 +1,4 @@
-﻿@model ClinicPortal.Controllers.SearchModel
+﻿@model SearchViewModel
 @section styles
 {
     <link href="@Url.Content("~/css/search.css")" rel="stylesheet" type="text/css" />
@@ -15,7 +15,7 @@
     </form>
     @if (Model.Result != null)
     {
-        <div class="col-md-6 search-result">
+        <div class="col-md-8 search-result">
             <partial name="_SearchResult" model="Model.Result" />
         </div>
     }

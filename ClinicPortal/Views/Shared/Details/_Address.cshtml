@@ -1,0 +1,45 @@
+﻿@model ClinicPortal.Entity.Search.Result.Details.Address[]
+@if (Model == null) { return; }
+<div class="card">
+    <h5 class="card-header">@ViewData["Title"]</h5>
+    <div class="card-body d-lg-flex flex-column">
+        @foreach (var item in Model)
+        {
+            <dl class="d-lg-inline-flex">
+                <dt col-sm-3>@Html.LabelFor(model => item.Full):</dt>
+                <dd class="ml-2">@Html.DisplayFor(model => item.Full)</dd>
+            </dl>
+            <dl class="d-lg-inline-flex">
+                <dt col-sm-3>@Html.LabelFor(model => item.Line1):</dt>
+                <dd class="ml-2">@Html.DisplayFor(model => item.Line1)</dd>
+            </dl>
+            <dl class="d-lg-inline-flex">
+                <dt col-sm-3>@Html.LabelFor(model => item.City):</dt>
+                <dd class="ml-2">@Html.DisplayFor(model => item.City)</dd>
+            </dl>
+
+            <dl class="d-lg-inline-flex">
+                <dt col-sm-3>@Html.LabelFor(model => item.State):</dt>
+                <dd class="ml-2">@Html.DisplayFor(model => item.State)</dd>
+            </dl>
+            <dl class="d-lg-inline-flex">
+                <dt col-sm-3>@Html.LabelFor(model => item.Zip):</dt>
+                <dd class="ml-2">@Html.DisplayFor(model => item.Zip)</dd>
+            </dl>
+
+            <dl class="d-lg-inline-flex">
+                <dt col-sm-3>@Html.LabelFor(model => item.Country):</dt>
+                <dd class="ml-2">@Html.DisplayFor(model => item.Country)</dd>
+            </dl>
+            <dl class="d-lg-inline-flex">
+                <dt col-sm-3>@Html.LabelFor(model => item.Phone):</dt>
+                <dd class="ml-2">@Html.DisplayFor(model => item.Phone)</dd>
+            </dl>
+
+            <dl class="d-lg-inline-flex">
+                <dt col-sm-3>@Html.LabelFor(model => item.Fax):</dt>
+                <dd class="ml-2">@Html.DisplayFor(model => item.Fax)</dd>
+            </dl>
+        }
+    </div>
+</div>
