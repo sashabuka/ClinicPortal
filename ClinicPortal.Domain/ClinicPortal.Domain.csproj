@@ -8,8 +8,4 @@
     <ProjectReference Include="..\ClinicPortal.Entity\ClinicPortal.Entity.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Convertor\" />
-  </ItemGroup>
-
 </Project>
