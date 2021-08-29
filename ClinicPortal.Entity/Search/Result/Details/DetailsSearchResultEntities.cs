@@ -100,6 +100,7 @@ namespace ClinicPortal.Entity.Search.Result.Details
         public string Type { get; set; }
     }
 
+
     public class Taxonomy
     {
         [JsonProperty("code")]
